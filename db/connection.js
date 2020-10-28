@@ -4,17 +4,14 @@ module.exports = {
     execSQLQuery: () => {
         const connection = mysql.createPool({
             host: "us-cdbr-east-02.cleardb.com",
-            user: "b5e448b4688021",
+            user: "beeba4f45bf370",
             port: "3306",
-            password: "68e0cd3d",
-            database: "heroku_2d72029db592459"
+            password: "44f9224e",
+            database: "heroku_23a2cbdbfd88261"
         });
       
         return connection
     }
     
 }
-
-
-
 
