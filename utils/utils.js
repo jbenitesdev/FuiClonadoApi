@@ -15,7 +15,7 @@ module.exports = {
         let email = post.email; 
         let termo = post.termo;
 
-        jwt.verify(req.token, 'secretkey', (err, authData) => {
+      
             if (err) {
                 res.sendStatus(403);
             } else {
@@ -29,12 +29,9 @@ module.exports = {
                 });
                 db.execSQLQuery().end();
             }
-        })
-
-        console.log("VALOR DE RES: ", res)
     },
     verificarNumero: (req, res, next) => {
-        jwt.verify(req.token, 'secretkey', (err, authData) => {
+
             if (err) {
                 res.sendStatus(403);
             } else {
@@ -51,7 +48,7 @@ module.exports = {
                 });
 
             }
-        })
+
 
         console.log("VALOR DE RES: ", res)
     },

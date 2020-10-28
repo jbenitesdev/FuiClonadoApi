@@ -8,7 +8,7 @@ const swaggerDocument = require('./swagger.json');
 const cors = require('cors')
 // mysql://b5e448b4688021:68e0cd3d@us-cdbr-east-02.cleardb.com/heroku_2d72029db592459?reconnect=true
 
-const PORT = process.env.PORT || 4006
+const PORT = process.env.PORT || 8564
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header("Access-Control-Allow-Credentials", "true");
@@ -20,11 +20,11 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-router.post('/salvarRegistro', Utils.verifyToken, (req, res) => {
+router.post('/salvarRegistro', (req, res) => {
     Utils.salvarRegistro(req, res);
 })
 
-router.get('/verificarNumero', Utils.verifyToken, (req, res) => {
+router.get('/verificarNumero', (req, res) => {
     Utils.verificarNumero(req, res)
 })
 
