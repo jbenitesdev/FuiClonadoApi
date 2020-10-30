@@ -24,10 +24,10 @@ NumeroClonado.create = (novoNumeroClonado, result) => {
 }
 
 NumeroClonado.findByNumber = (numero, result) => {
-  sql.query(`SELECT * FROM numerosClonados WHERE numero = '${numero}'`, (err, res) => {
+  sql.query(`SELECT * FROM numerosClonados WHERE numero LIKE '%${numero}%'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(err, null);
+      result(null, { status: 500, msg: "Numero não encontrado"});
       return;
     }
 

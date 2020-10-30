@@ -28,9 +28,10 @@ exports.create = (req, res) => {
 exports.findNumber = (req, res) => {
   NumeroClonado.findByNumber(req.params.numero, (err, data) => {
     if (err)
-    res.status(500).send({
-      message: `Erro ao procurar o número ${req.params.numero}.`
-    });        
+      res.send({status: 500, msg: "Número não encontrado"})
+    // res.status(500).send({
+    //   message: `Erro ao procurar o número ${req.params.numero}.`
+    // });        
     else res.send(data);
   });
 };
