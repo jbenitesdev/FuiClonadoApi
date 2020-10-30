@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/numeroClonado.routes")(app);
+require("./routes/mail.routes")(app);
 
 const PORT = process.env.PORT || 8564
 app.listen(PORT, () => {
