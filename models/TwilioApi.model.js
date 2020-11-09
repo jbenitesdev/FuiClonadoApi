@@ -7,7 +7,7 @@ const TwilioApi  = function(twilioApi) {
 
 TwilioApi.verify = (twilioApi, result) => {
     Twilio.verify.services(process.env.SERVICE_ID).verifications.create({
-    to: twilioApi.phoneNumber, channel: process.env.channel
+    to: twilioApi.phoneNumber, channel: process.env.TWILIO_CHANNEL
     }).then(data => {
         let resp = { to: data.to, status: data.status, valid: data.valid }
         result(null, { data: resp, status: 200, msg: "Sucesso ao enviar código!" });
