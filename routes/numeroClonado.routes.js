@@ -3,5 +3,6 @@ module.exports = app => {
       
     app.post("/numeroClonado", numeroClonado.create);
     app.get("/numeroClonado/:numero", numeroClonado.findNumber);
+    app.delete("/numeroClonado/:numero", numeroClonado.deleteNumber);
 };
   

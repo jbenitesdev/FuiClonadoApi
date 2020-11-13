@@ -29,9 +29,14 @@ exports.findNumber = (req, res) => {
   NumeroClonado.findByNumber(req.params.numero, (err, data) => {
     if (err)
       res.send({status: 500, msg: "Número não encontrado"})
-    // res.status(500).send({
-    //   message: `Erro ao procurar o número ${req.params.numero}.`
-    // });        
+    else res.send(data);
+  });
+};
+
+exports.deleteNumber = (req, res) => {
+  NumeroClonado.deleteByNumber(req.params.numero, (err, data) => {
+    if (err)
+      res.send({status: 500, msg: "Número não encontrado"})
     else res.send(data);
   });
 };

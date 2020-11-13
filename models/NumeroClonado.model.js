@@ -41,4 +41,33 @@ NumeroClonado.findByNumber = (numero, result) => {
   });
 };
 
+NumeroClonado.deleteByNumber = (numero, result) => {
+  sql.query(`SELECT * FROM numerosClonados WHERE numero LIKE '%${numero}%' LIMIT 1`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, { status: 500, msg: "Numero não encontrado"});
+      return;
+    }
+
+    if (res.length) {
+      sql.query(`DELETE FROM numerosClonados WHERE id =${res[0].id}`, (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, { status: 500, msg: "ID não encontrado"});
+          return;
+        }
+      
+        console.log("RES NA DELEÇÃO: ", res)
+        if (res.length) {
+          console.log("Deletou: ", res[0]);
+          result(null, { status: 200, msg: `O número: ${numero} foi recuperado`, ...res[0]});
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }); 
+    }
+  });
+};
+
 module.exports = NumeroClonado;
