@@ -3,4 +3,5 @@ module.exports = app => {
       
     app.post("/verifyNumber", twilioApi.verifyBySMS);
     app.post("/checkCodeNumber", twilioApi.checkSMSCode)
+    app.post("/sendWhatsappMessage", twilioApi.sendMessage)
 };

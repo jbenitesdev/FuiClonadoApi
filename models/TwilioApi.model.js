@@ -25,4 +25,17 @@ TwilioApi.check = (twilioApi, result) => {
     })
 }
 
+TwilioApi.sendWhatsappMessage = (twilioApi, result) => {
+    Twilio.messages
+        .create({
+            from: 'whatsapp:+19292992511',
+            body: 'Mensagem de teste do site FuiClonado, favor ignorar!',
+            to: 'whatsapp:+5521995640965'
+        })
+        .then(message => {
+            console.log("")
+          console.log(message.sid)
+        });
+}
+
 module.exports = TwilioApi;
