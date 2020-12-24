@@ -65,3 +65,25 @@ exports.sendMessage = (req, res) => {
         else res.send(data);
     })
 }
+
+exports.sendSMSMessage = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Objeto não pode ser vazio!"
+        });
+    }
+
+    const twilioApi = new TwilioApi({
+        phoneNumber: req.body.phoneNumber,
+        msg: req.body.msg
+    });
+
+    TwilioApi.sendSMSMessage(twilioApi, (err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Erro ao obter teste."
+        });
+        else res.send(data);
+    })
+}

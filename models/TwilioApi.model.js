@@ -3,6 +3,7 @@ const Twilio = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN
 const TwilioApi  = function(twilioApi) {
     this.phoneNumber = twilioApi.phoneNumber;
     this.code = twilioApi.code;
+    this.msg = twilioApi.msg;
 }
 
 TwilioApi.verify = (twilioApi, result) => {
@@ -36,6 +37,35 @@ TwilioApi.sendWhatsappMessage = (twilioApi, result) => {
             console.log("")
           console.log(message.sid)
         });
+}
+
+TwilioApi.sendSMSMessage = (twilioApi, result) => {
+    console.log("VALOR DE TWILIO API: ", twilioApi)
+    const bindingOpts = {
+        identity: '00000001', // We recommend using a GUID or other anonymized identifier for Identity.
+        bindingType: 'sms',
+        address: twilioApi.phoneNumber
+        // address: '+5521995640965',
+    };
+
+    const notificationOpts = {
+        identity: '00000001', // We recommend using a GUID or other anonymized identifier for Identity.
+        body: twilioApi.msg,
+        // body: 'Knok-Knok! This is your first Notify SMS',
+    };
+
+    Twilio.notify
+        .services(process.env.SMS_SERVICE_ID)
+        .bindings.create(bindingOpts)
+        .then(binding => console.log(binding.sid))
+        .catch(error => console.log(error))
+        .done();
+    
+    Twilio.notify
+        .services(process.env.SMS_SERVICE_ID)
+        .notifications.create(notificationOpts)
+        .then(notification => console.log(notification.sid))
+        .catch(error => console.log(error));
 }
 
 module.exports = TwilioApi;
