@@ -69,13 +69,19 @@ TwilioApi.sendSMSMessage = (twilioApi, result) => {
 }
 
 TwilioApi.sendSMSMessageOnly = (twilioApi, result) => {
-    const number = decrypt({iv: process.env.TWILIO_IV, content: process.env.TWILIO_CON})
+    const sender = decrypt({iv: process.env.TWILIO_IV, content: process.env.TWILIO_CON})
     console.log("VALOR DE TWILIO API: ", twilioApi)
-    Twilio.messages.create({
-        body: twilioApi.msg,
-        from: number,
-        to: twilioApi.phoneNumber
-    }).then(message => console.log(message.sid));
+
+    twilioApi.phoneNumber.forEach(targetPhone => {
+        console.log("Enviando para telefone: ", targetPhone)
+        Twilio.messages.create({
+            body: twilioApi.msg,
+            from: sender,
+            to: targetPhone
+        }).then(message => console.log(message.sid));
+   });
+
+    
 }
 
 module.exports = TwilioApi;
