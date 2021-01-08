@@ -27,7 +27,9 @@ require("./routes/vonageApi.routes")(app);
 require("./routes/twilioApi.routes")(app);
 
 const PORT = process.env.PORT || 8564
-app.listen(PORT, () => {
+var server = app.listen(PORT, () => {
     console.log('Start port ' + PORT)
     console.log('Servidor iniciado na porta ' + PORT)
 });
+
+server.timeout = 300000;
