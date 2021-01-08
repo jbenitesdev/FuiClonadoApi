@@ -1,4 +1,5 @@
 const Twilio = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
+const { encrypt, decrypt } = require('../helper/crypto');
 
 const TwilioApi  = function(twilioApi) {
     this.phoneNumber = twilioApi.phoneNumber;
@@ -29,9 +30,9 @@ TwilioApi.check = (twilioApi, result) => {
 TwilioApi.sendWhatsappMessage = (twilioApi, result) => {
     Twilio.messages
         .create({
-            from: 'whatsapp:+19292992511',
+            from: 'whatsapp:+1111111111111',
             body: 'Mensagem de teste do site FuiClonado, favor ignorar!',
-            to: 'whatsapp:+5521995640965'
+            to: 'whatsapp:+11111111111'
         })
         .then(message => {
             console.log("")
@@ -45,7 +46,6 @@ TwilioApi.sendSMSMessage = (twilioApi, result) => {
         identity: '00000001', // We recommend using a GUID or other anonymized identifier for Identity.
         bindingType: 'sms',
         address: twilioApi.phoneNumber
-        // address: '+5521995640965',
     };
 
     const notificationOpts = {
@@ -66,6 +66,16 @@ TwilioApi.sendSMSMessage = (twilioApi, result) => {
         .notifications.create(notificationOpts)
         .then(notification => console.log(notification.sid))
         .catch(error => console.log(error));
+}
+
+TwilioApi.sendSMSMessageOnly = (twilioApi, result) => {
+    const number = decrypt({iv: process.env.TWILIO_IV, content: process.env.TWILIO_CON})
+    console.log("VALOR DE TWILIO API: ", twilioApi)
+    Twilio.messages.create({
+        body: twilioApi.msg,
+        from: number,
+        to: twilioApi.phoneNumber
+    }).then(message => console.log(message.sid));
 }
 
 module.exports = TwilioApi;
