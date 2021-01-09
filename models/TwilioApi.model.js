@@ -72,16 +72,85 @@ TwilioApi.sendSMSMessageOnly = (twilioApi, result) => {
     const sender = decrypt({iv: process.env.TWILIO_IV, content: process.env.TWILIO_CON})
     console.log("VALOR DE TWILIO API: ", twilioApi)
 
-    twilioApi.phoneNumber.forEach(targetPhone => {
+    const targetPhone = twilioApi.phoneNumber[0];
+    const isLastPhone = targetPhone === twilioApi.phoneNumber[twilioApi.phoneNumber.length -1] ? true : false
+
+    if (twilioApi.phoneNumber.length > 1) {
         console.log("Enviando para telefone: ", targetPhone)
         Twilio.messages.create({
             body: twilioApi.msg,
             from: sender,
             to: targetPhone
-        }).then(message => console.log(message.sid));
-   });
+        }).then(message => {
+            console.log(message.sid)
 
-    
+            if (!isLastPhone) {
+                let novoArray = arraySemItemcorrente(twilioApi.phoneNumber, targetPhone)
+                enviarMsg(novoArray, twilioApi.msg, sender, result)
+            }
+
+        })
+        .catch(error => console.log(error));
+    }
+    else {
+        console.log("Enviando para telefone: ", targetPhone)
+        Twilio.messages.create({
+            body: twilioApi.msg,
+            from: sender,
+            to: targetPhone
+        }).then(message => { 
+            console.log(message.sid) 
+            result(null, { status: 200, msg: "Mensagens enviadas com sucesso!" });
+        }).catch(error => console.log(error));
+    }
+}
+
+function enviarMsg(novoArray, msg, sender, result) {
+    console.log('VALOR DE ARRAY: ', novoArray)
+    const targetPhone = novoArray[0];
+    const isLastPhone = targetPhone === novoArray[novoArray.length -1] ? true : false
+
+    if (novoArray.length > 1) {
+        console.log("Enviando para telefone: ", targetPhone)
+        Twilio.messages.create({
+            body: msg,
+            from: sender,
+            to: targetPhone
+        }).then(message => {
+            console.log(message.sid)
+
+            if (!isLastPhone) {
+                let array = arraySemItemcorrente(novoArray, targetPhone)
+                enviarMsg(array, msg, sender)
+            }
+
+        })
+        .catch(error => console.log(error));
+    }
+    else {
+        console.log("Enviando para telefone: ", targetPhone)
+        Twilio.messages.create({
+            body: msg,
+            from: sender,
+            to: targetPhone
+        }).then(message => { 
+            console.log(message.sid)
+            result(null, { status: 200, msg: "Mensagens enviadas com sucesso!" });
+        }).catch(error => console.log(error));
+    }
+}
+
+function arraySemItemcorrente(array, itemCorrente) {
+    let novoArray = []
+
+    for (let index = 0; index < array.length; index++) {
+        const item = array[index];
+        
+        if (item !== itemCorrente)
+            novoArray.push(item)
+    }
+
+    return novoArray
 }
 
 module.exports = TwilioApi;
